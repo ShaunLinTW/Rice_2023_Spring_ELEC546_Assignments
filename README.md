@@ -309,6 +309,73 @@ Show image reconstruction results using 1, 3, 10, 50, and 100 principal componen
 </p>
 </details>
 
+/////////////////////////////////////////////////////
+
+<details><summary>HW4</summary>
+<p>
+
+### Introduction
+
+This assignment will introduce you to PyTorch and neural networks. We have provided a Colab notebook [located here](https://colab.research.google.com/drive/1rMHjwEPyu3eOvdTV8OUpPjFF5VW-zv9N?usp=sharing) with skeleton code to get you started. Colab comes with a free GPU. To activate the GPU during your session, click Runtime on the top toolbar, followed by Change runtime type, and select GPU under hardware accelerator. You will find the GPU useful for quickly training your neural network in Problem 2. 
+
+<details><summary>1.0 PyTorch (10 points)</summary>
+<p>
+
+In this problem, you will perform some basic operations in PyTorch, including creating tensors, moving arrays between PyTorch and Numpy, and using autograd. **Before starting, please read the following pages**:
+
+1.  [Tensor basics](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)
+2.	[Autograd basics](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html), these two sections:
+      
+      a. Differentiation in Autograd
+      
+      b. Vector Calculus using autograd
+      
+### 1.1 Basics of Autograd (5 points)
+
+a.  In the provided notebook, fill in the function **sin_taylor()** with code to approximate the value of the **sine** function using the Taylor approximation ([defined here](https://en.wikipedia.org/wiki/Taylor_series#:~:text=The%20sine%20function%20(blue)%20is,higher%20degree%20provide%20worse%20approximations.)). You can use **numpy.math.factorial()** to help you.
+
+b.  Create a tensor **x** with value 𝜋/4 . Create a new tensor **y = sin_taylor(x)**. Use **y.backward()** to evaluate the gradient of **y** at **x**. Is this value a close approximation to the exact derivative of **sine** at **x**?
+
+c.  Now, create a NumPy array **x_npy** of 100 random numbers drawn uniformly from [−𝜋, 𝜋] (use [np.random.uniform](https://numpy.org/doc/stable/reference/random/generated/numpy.random.uniform.html)). Create a tensor **x** from that array and place the tensor onto the GPU. Again, evaluate **y = sin_taylor(x)**. This time, **y** is a vector. If you run **y.backward()**, it will throw an error because **autograd** is meant to evaluate the derivative of a scalar output with respect to input vectors (see tutorial pages above). Instead, run either one of these two lines (they do the same thing):
+
+    y.sum().backward()
+
+    y.backward(gradient=torch.ones(100))
+
+What is happening here? We are creating a ‘dummy’ scalar output (let’s call it **z**), which contains the sum of values in **y**, and acts as the final scalar output of our computation graph. Due to the chain rule of differentiation, **dz/dx** will yield the same value as **dy/dx**.
+
+d.  Get the gradient tensor **dz/dx** and convert that tensor to a Numpy array. Plot **dz/dx** vs. **x_npy**, overlaid on a cosine curve. Confirm that the points fall on the curve and put this plot in your report.
+
+### 1.2 Image Denoising (5 points)
+
+In this problem, you will denoise [this noisy parrot image](https://drive.google.com/file/d/1hkRGTdN6heiCRkZQiX08sJmYOomBBRTw/view?usp=share_link), which we denote **I**. To do so, you will create a denoising loss function, and use **autograd** to optimize the pixels of a new image **J**, which will be a denoised version of **I**.
+
+a.  In your Colab notebook, implement denoising_loss() to compute the following loss function:
+
+</p>
+</details>
+
+<details><summary>2.0 Training an image classifier (10 points)</summary>
+<p>
+
+</p>
+</details>
+
+</p>
+</details>
+/////////////////////////////////////////////////////
+<details><summary>HW5</summary>
+<p>
+
+<details><summary>Problem 1: Semantic Segmentation (7 points)</summary>
+<p>
+
+</p>
+</details>
+
+</p>
+</details>
+
 ## Plagiarism
 
 Plagiarism of any form will not be tolerated. You are expected to credit all sources explicitly. If you have any doubts regarding what is and is not plagiarism, talk to me.
