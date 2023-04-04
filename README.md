@@ -309,8 +309,6 @@ Show image reconstruction results using 1, 3, 10, 50, and 100 principal componen
 </p>
 </details>
 
-/////////////////////////////////////////////////////
-
 <details><summary>HW4</summary>
 <p>
 
@@ -350,13 +348,59 @@ d.  Get the gradient tensor **dz/dx** and convert that tensor to a Numpy array. 
 
 In this problem, you will denoise [this noisy parrot image](https://drive.google.com/file/d/1hkRGTdN6heiCRkZQiX08sJmYOomBBRTw/view?usp=share_link), which we denote **I**. To do so, you will create a denoising loss function, and use **autograd** to optimize the pixels of a new image **J**, which will be a denoised version of **I**.
 
-a.  In your Colab notebook, implement denoising_loss() to compute the following loss function:
+![noisy_parrot](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW4/Input%20image/parrot_noisy.png)
+    
+a.  In your Colab notebook, implement **denoising_loss()** to compute the following loss function:
+    ![1.2 equation](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW4/Input%20image/1_2_equation.png)
+    
+The first component is a data term making sure that the predicted image **J** is not
+too far from the original image I. The second term is a regularizer which will
+reward **J** if it is smoother, quantified using **J**’s spatial derivatives. We have
+provided you a function **get_spatial_gradients()** to compute the gradients.
+
+b.  Implement gradient descent to optimize the pixels of J using your loss function and **autograd**. Initialize **J** to be a copy of **I**. Try different values for the learning rate and 𝛼 and find a combination that does a good job. Put the smoothed image **J**, along with the learning rate and 𝛼 you used in your report.
+
+c.  **ELEC/COMP 546 Only**: Change the loss function to use L2 norms instead of L1. Does it work better or worse? Why?
 
 </p>
 </details>
 
 <details><summary>2.0 Training an image classifier (10 points)</summary>
 <p>
+
+In this problem, you will create and train your first neural network image classifier!
+Before starting this question, please read the following pages about training neural networks in PyTorch:
+
+1.	[Data loading](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+2.	[Models](https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html)
+3.	[Training loop](https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html)
+
+We will be using the [CIFAR10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html), consisting of 60,000 images of 10 common classes. Each image is of size 32 x 32 x 3. Download the full dataset as one .npz file [here](https://drive.google.com/file/d/1sAiIwwdEInDfpKVPsdIu81tiOIZh0F3k/view?usp=share_link), and add it to your Google Drive. This file contains three objects: X: array of images, y: array of labels (specified as integers in [0,9]), and label_names: list of class names. Please complete the following:
+
+a.  Finish implementing the **CIFARDataset** class. See comments in the code for further instructions.
+    
+b.  Add transforms: **RandomHorizontalFlip**, **RandomAffine** ([-5, 5] degree range, [0.8, 1.2] scale range) and **ColorJitter** ([0.8, 1.2] brightness range, [0.8, 1.2] saturation range). Don’t forget to apply the **ToTensor** transform first, which converts a H x W x 3 image to a 3 x H x W tensor, and normalizes the pixel range to [0,1]. You will find the transform APIs in [this page](https://pytorch.org/vision/0.9/transforms.html).
+    
+c.  Implement a CNN classifier with the structure in the following table. You will find the APIs for Conv, Linear, ReLU, and MaxPool in [this page](https://pytorch.org/docs/stable/nn.html). The spatial dimensions of an image should NOT change after a Conv operation (only after Maxpooling).
+    
+![2.0.c Table](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW4/Input%20image/2_0_c_table.png)
+    
+d.  Implement the training loop.
+
+e.  Train your classifier for 15 epochs. The GPU, if accessible, will result in faster training. Make sure to save a model checkpoint at the end of each epoch, as you will use them in part f. Use the following training settings: batch size = 64, optimizer = Adam, learning rate = 1e-4.
+
+f.  Compute validation loss per epoch and plot it. Which model will you choose and why?
+
+g.  Run the best model on your test set and report:
+    i.   Overall accuracy (# of examples correctly classified / # of examples)
+    ii.   Accuracy per class
+    iii.  Confusion matrix: A 10 x 10 table, where the cell at row i and column j reports the fraction of times an example of class i was labeled by your model as class j. Please label the rows/columns by the object class name, not indices.
+    iv.  For the class on which your model has the worst accuracy (part ii), what is the other class it is most confused with? Show 5-10 test images that your model confused between these classes and comment on what factors may have caused the poor performance.
+    
+h.  ELEC/COMP 546 Only: Change the last two Conv blocks in the architecture to Residual blocks and report overall accuracy of the best model. Recall that a residual block has the form:
+
+![2.0.h Residual block](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW4/Input%20image/2_0_h_Residual_block.png)
+
 
 </p>
 </details>
