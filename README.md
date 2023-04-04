@@ -392,30 +392,72 @@ e.  Train your classifier for 15 epochs. The GPU, if accessible, will result in 
 f.  Compute validation loss per epoch and plot it. Which model will you choose and why?
 
 g.  Run the best model on your test set and report:
+    
     i.   Overall accuracy (# of examples correctly classified / # of examples)
+    
     ii.   Accuracy per class
+    
     iii.  Confusion matrix: A 10 x 10 table, where the cell at row i and column j reports the fraction of times an example of class i was labeled by your model as class j. Please label the rows/columns by the object class name, not indices.
+    
     iv.  For the class on which your model has the worst accuracy (part ii), what is the other class it is most confused with? Show 5-10 test images that your model confused between these classes and comment on what factors may have caused the poor performance.
     
 h.  ELEC/COMP 546 Only: Change the last two Conv blocks in the architecture to Residual blocks and report overall accuracy of the best model. Recall that a residual block has the form:
 
 ![2.0.h Residual block](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW4/Input%20image/2_0_h_Residual_block.png)
 
-
 </p>
 </details>
 
 </p>
 </details>
-/////////////////////////////////////////////////////
+
 <details><summary>HW5</summary>
 <p>
 
 <details><summary>Problem 1: Semantic Segmentation (7 points)</summary>
 <p>
 
+In this problem, you will train a simple semantic segmentation network. Recall that in semantic segmentation, the algorithm must assign each pixel of an input image to one of K object classes. We have provided you with a [Colab notebook](https://colab.research.google.com/drive/1uZB_m8otFmYRAEZZVvsHiQzF8xo72xmm?usp=sharing) with skeleton code to get you started.
+
+We will use a portion of the [CityScapes dataset](https://www.cityscapes-dataset.com/) for this problem, consisting of 2975 training images and 500 validation images. The second cell in the notebook will automatically download the dataset into your local Colab environment.
+
+Each image also comes with annotations for 34 object classes in the form of a segmentation image (with suffix ‘labelIds.png’). The segmentation image contains integer ids in [0, 33] indicating the class of each pixel. [This page](https://github.com/mcordts/cityscapesScripts/blob/master/cityscapesscripts/helpers/labels.py) provides the mappings from id to label name.
+
+a.  Fill in the **init** and **forward** functions for the **Segmenter** class, which will implement your segmentation network. The network will be a convolutional encoder-decoder. The encoder will consist of the first several ‘blocks’ of layers extracted from the [VGG16 network](https://neurohive.io/wp-content/uploads/2018/11/vgg16-1-e1542731207177.png) pretrained on ImageNet (the provided Colab notebook extracts these layers for you). You must implement the decoder with this form:
+
+![1.a Table](https://github.com/PiscesLin/Rice_2023_Spring_ELEC546_Assignments/blob/main/HW5/Input%20image/1_a_table.png)
+
+Use PyTorch’s [Upsample function](https://pytorch.org/docs/stable/generated/torch.nn.Upsample.html). Remember that the size of the image should not change after each Conv operation (add appropriate padding).
+
+b.  Train your model for 7 epochs using the nn.CrossEntropy loss function. Using the GPU, this should take about 30 minutes.
+
+c.  Using the final model, report the [intersection-over-union](https://b2633864.smushcdn.com/2633864/wp-content/uploads/2016/09/iou_equation.png?lossy=1&strip=1&webp=1) (IoU) per class on the validation set in a table. For more on IoU, see [this page](https://www.jeremyjordan.me/evaluating-image-segmentation-models/). Which class has the best IoU, and which has the worst? Comment on why you think certain classes have better accuracies than others, and what factors may cause those differences.
+
+d.  For each of the following validation images, show three images side-by-side: the image, the ground truth segmentation, and your predicted segmentation. The segmentation images should be in color, with each class represented by a different color.
+    
+    i.    frankfurt_000000_015389_gtFine_color.png
+    
+    ii.   frankfurt_000001_057954_gtFine_color.png
+    
+    iii.  lindau_000037_000019_gtFine_color.png
+    
+    iv.  munster_000173_000019_gtFine_color.png
+
+e.  Look at the lines of code for resizing the images and masks to 256 x 256. We use bilinear interpolation when resizing the image, but nearest neighbor interpolation when resizing the mask. Why do we not use bilinear interpolation for the mask?
+
+f.  Look at the **__getitem__** function for the CityScapesDataset class and notice that we apply a horizontal flip augmentation to the image and mask using a random number generator. Why do we apply the flip in this way instead of simply adding **T.RandomHorizontalFlip** to the sequence of transforms in **im_transform** and **mask_transform** (similar to what you did in Homework 4)
+
+
 </p>
 </details>
+
+</p>
+</details>
+
+<details><summary>HW6</summary>
+<p>
+
+To be continue...
 
 </p>
 </details>
